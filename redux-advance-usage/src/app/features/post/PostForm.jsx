@@ -1,22 +1,27 @@
 import { useState } from "react";
-import { addPost, selectAllPosts } from "./postsSlice";
+import { addPost } from "./postsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import styles from './Posts.module.css'
+import { selectAllUsers } from "../user/usersSlice";
+import styles from "./Posts.module.css";
 
 const PostForm = () => {
   const [newPost, setNewPost] = useState({
     title: "",
     content: "",
+    userId: "",
   });
-  const posts = useSelector(selectAllPosts);
   const dispatch = useDispatch();
+  const users = useSelector(selectAllUsers);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (newPost.title && newPost.title) {
-      dispatch(addPost(newPost.title, newPost.content));
+
+    if (newPost.title && newPost.title && newPost.userId) {
+      dispatch(addPost(newPost.title, newPost.content, newPost.userId));
+    } else {
+      alert("all fields have to be filled");
     }
-    setNewPost({ title: "", content: "" });
+    setNewPost({ title: "", content: "", userId: "" });
   };
 
   const handleChange = (e) => {
@@ -27,7 +32,7 @@ const PostForm = () => {
     }));
   };
 
-
+  const isDisabled = !(newPost.title && newPost.content && newPost.userId)
 
   return (
     <form className={styles.formContainer} onSubmit={handleSubmit}>
@@ -39,7 +44,6 @@ const PostForm = () => {
         name="title"
         type="text"
       />
-      <br />
       <label htmlFor="content">content</label>
       <input
         id="content"
@@ -48,7 +52,25 @@ const PostForm = () => {
         type="text"
         name="content"
       />
-      <input type="submit" value="add" />
+      <select
+        onChange={handleChange}
+        value={newPost.userId}
+        name="userId"
+        id="userId"
+      >
+        <option value=""></option>
+        {users.map((user) => (
+          <option key={user.id} value={user.id}>
+            {user.name}
+          </option>
+        ))}
+      </select>
+      <input
+        style={{color: isDisabled ? '#fff' : '#000'}}
+        disabled={isDisabled}
+        type="submit"
+        value="add"
+      />
     </form>
   );
 };

@@ -75,10 +75,18 @@ export const postsSlice = createSlice({
     },
     addReaction: (state, action) => {
       const { postId, reaction } = action.payload;
-      const existingPost = state.find(post => post.id == postId);
-      if (existingPost) {
-        existingPost.reactions[reaction]++
-      }
+      return state.map(post => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            reactions: {
+              ...post.reactions,
+              [reaction]: post.reactions[reaction] + 1,
+            },
+          };
+        }
+        return post;
+      })
     }
   }
 })

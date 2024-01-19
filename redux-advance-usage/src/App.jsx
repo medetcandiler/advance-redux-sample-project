@@ -1,12 +1,15 @@
+import './index.css'
 import PostsList from "./app/features/post/PostLists";
 import PostForm from "./app/features/post/PostForm";
+import UserLists from './app/features/user/UserLists';
 
 function App() {
   return (
     <main>
-      <h3>POSTS</h3>
       <PostForm />
+      <h3 className='title'>POSTS</h3>
       <PostsList />
+      <UserLists />
     </main>
   );
 }

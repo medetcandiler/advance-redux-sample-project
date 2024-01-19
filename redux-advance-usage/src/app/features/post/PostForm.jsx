@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { addPost, selectAllPosts } from "./postsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { nanoid } from "@reduxjs/toolkit";
+import styles from './Posts.module.css'
 
 const PostForm = () => {
   const [newPost, setNewPost] = useState({
@@ -27,12 +27,13 @@ const PostForm = () => {
     }));
   };
 
-  console.log(posts)
+
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={styles.formContainer} onSubmit={handleSubmit}>
       <label htmlFor="title">title</label>
       <input
+        id="title"
         onChange={handleChange}
         value={newPost.title}
         name="title"
@@ -41,6 +42,7 @@ const PostForm = () => {
       <br />
       <label htmlFor="content">content</label>
       <input
+        id="content"
         onChange={handleChange}
         value={newPost.content}
         type="text"

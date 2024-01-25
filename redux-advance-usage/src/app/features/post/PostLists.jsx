@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectAllPosts } from "./postsSlice";
 import styles from "./Posts.module.css";
 import PostAuthor from "./PostAuthor";

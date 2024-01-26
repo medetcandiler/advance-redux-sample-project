@@ -67,7 +67,7 @@ export const postsSlice = createSlice({
         state.status = 'succeeded'
         let min = 1;
         const loadedPosts = action.payload.map(post => {
-          post.date = sub(new Date(), { minutes: min++ }.toISOString());
+          post.date = sub(new Date(), { minutes: min++ }).toISOString();
           post.reactions = {
             thumbsUp: 0,
             wow: 0,
@@ -90,6 +90,6 @@ export const postsSlice = createSlice({
 
 export const selectAllPosts = (state) => state.posts.posts;
 export const getPostsStatus = (state) => state.posts.status;
-export const getPostError = (state) => state.posts.error;
+export const getPostsError = (state) => state.posts.error;
 export const { addPost, addReaction } = postsSlice.actions
 export default postsSlice.reducer 

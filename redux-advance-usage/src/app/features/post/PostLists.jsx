@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectAllPosts,
-  getPostError,
+  getPostsError,
   getPostsStatus,
   fetchPosts,
 } from "./postsSlice";
@@ -12,7 +12,7 @@ import styles from "./Posts.module.css";
 const PostsList = () => {
   const dispatch = useDispatch();
   const posts = useSelector(selectAllPosts);
-  const postsStatus = useSelector(getPostError);
+  const postsStatus = useSelector(getPostsStatus);
   const error = useSelector(getPostsStatus);
 
   useEffect(() => {
@@ -28,10 +28,11 @@ const PostsList = () => {
     const orderedPosts = posts
       .slice()
       .sort((a, b) => b.date.localeCompare(a.date));
-    content = orderedPosts.map((post) => (
-      <PostExcerpt key={post.id} post={post} />
+
+    content = orderedPosts.map((post, i) => (
+      <PostExcerpt key={i} post={post} />
     ));
-  } else if(postsStatus === 'rejected') {
+  } else if (postsStatus === "rejected") {
     content = <p>{error}</p>;
   }
 

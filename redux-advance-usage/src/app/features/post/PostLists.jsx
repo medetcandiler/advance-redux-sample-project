@@ -13,10 +13,10 @@ const PostsList = () => {
   const dispatch = useDispatch();
   const posts = useSelector(selectAllPosts);
   const postsStatus = useSelector(getPostsStatus);
-  const error = useSelector(getPostsStatus);
+  const error = useSelector(getPostsError);
 
   useEffect(() => {
-    if (postsStatus === "idle") {
+    if (postsStatus === "idle" && posts.length === 0) {
       dispatch(fetchPosts());
     }
   }, [postsStatus, dispatch]);
@@ -29,8 +29,8 @@ const PostsList = () => {
       .slice()
       .sort((a, b) => b.date.localeCompare(a.date));
 
-    content = orderedPosts.map((post, i) => (
-      <PostExcerpt key={i} post={post} />
+    content = orderedPosts.map((post) => (
+      <PostExcerpt key={post.id} post={post} />
     ));
   } else if (postsStatus === "rejected") {
     content = <p>{error}</p>;

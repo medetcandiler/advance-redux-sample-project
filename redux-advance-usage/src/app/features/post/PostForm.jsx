@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addPost } from "./postsSlice";
+import { addNewPost } from "./postsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllUsers } from "../user/usersSlice";
 import styles from "./Posts.module.css";
@@ -10,18 +10,34 @@ const PostForm = () => {
     content: "",
     userId: "",
   });
+  const [addReqStatus, setAddReqStatus] = useState("idle");
   const dispatch = useDispatch();
   const users = useSelector(selectAllUsers);
 
-  const handleSubmit = (e) => {
+  const isDisabled =
+    [newPost.content, newPost.title, newPost.userId].every(Boolean) &&
+    addReqStatus === "idle";
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (newPost.title && newPost.title && newPost.userId) {
-      dispatch(addPost(newPost.title, newPost.content, newPost.userId));
-    } else {
-      alert("all fields have to be filled");
+    if (isDisabled) {
+      try {
+        setAddReqStatus("pending");
+        await dispatch(
+          addNewPost({
+            title: newPost.title,
+            body: newPost.content,
+            userId: newPost.userId,
+          })
+        ).unwrap();
+        setNewPost({ title: "", content: "", userId: "" });
+      } catch (error) {
+        console.error(error.message);
+      } finally {
+        setAddReqStatus("idle");
+      }
     }
-    setNewPost({ title: "", content: "", userId: "" });
   };
 
   const handleChange = (e) => {
@@ -31,8 +47,6 @@ const PostForm = () => {
       [name]: value,
     }));
   };
-
-  const isDisabled = !(newPost.title && newPost.content && newPost.userId);
 
   return (
     <form className={styles.formContainer} onSubmit={handleSubmit}>
@@ -67,7 +81,7 @@ const PostForm = () => {
       </select>
       <input
         style={{ color: isDisabled ? "#fff" : "#000" }}
-        disabled={isDisabled}
+        disabled={!isDisabled}
         type="submit"
         value="add"
       />

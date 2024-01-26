@@ -9,7 +9,6 @@ function App() {
       <PostForm />
       <h3 className='title'>POSTS</h3>
       <PostsList />
-      <UserLists />
     </main>
   );
 }

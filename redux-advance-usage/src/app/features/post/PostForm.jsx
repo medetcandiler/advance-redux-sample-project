@@ -32,7 +32,7 @@ const PostForm = () => {
     }));
   };
 
-  const isDisabled = !(newPost.title && newPost.content && newPost.userId)
+  const isDisabled = !(newPost.title && newPost.content && newPost.userId);
 
   return (
     <form className={styles.formContainer} onSubmit={handleSubmit}>
@@ -66,7 +66,7 @@ const PostForm = () => {
         ))}
       </select>
       <input
-        style={{color: isDisabled ? '#fff' : '#000'}}
+        style={{ color: isDisabled ? "#fff" : "#000" }}
         disabled={isDisabled}
         type="submit"
         value="add"
